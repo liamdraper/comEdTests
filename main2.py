@@ -5,12 +5,46 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import main2
+
+# class LogInPage(unittest.TestCase):
+
+#     def setUp(self):
+#         self.driver = webdriver.Chrome()
+#         self.driver.get('https://ccb.elevatenp.org/enroll/')
+#         # Waits for web elements to load first
+#         self.driver.implicitly_wait(10)
+
+#     def test_login(self):
+#         password = self.driver.find_element(By.ID, 'password_protected_pass')
+#         password.send_keys('cbb')
+#         submit_button = self.driver.find_element(By.ID, "wp-submit")
+#         submit_button.click()
+#         assert True
+
+#     def tearDown(self):
+#         self.driver.close()
+
 class ConctactFormTest(unittest.TestCase):
 
     def setUp(self):
         self.driver = webdriver.Chrome()
-        self.driver.get('https://hourlypricing.comed.com/enroll/')
+        self.driver.get('https://ccb.elevatenp.org/enroll/')
+        self.driver.implicitly_wait(20)
 
+    # Logs into testing environment
+    def test_login(self):
+        password = self.driver.find_element(By.ID, 'password_protected_pass')
+        password.send_keys('ccb')
+        submit_button = self.driver.find_element(By.ID, "wp-submit")
+        submit_button.click()
+
+        # Wait for the next page to load 
+        WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located((By.ID, 'tfa_FirstName'))
+        )
+        
+        assert True
+    
     def test_step1(self):
         # Form elements
         first_name = self.driver.find_element(By.ID, 'tfa_FirstName')
@@ -47,7 +81,8 @@ class ConctactFormTest(unittest.TestCase):
         
 
     def tearDown(self):
-        self.driver.close()
+        # self.driver.close()
+        pass
 
 if __name__ == '__main__':
     unittest.main()
