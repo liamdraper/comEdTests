@@ -1,4 +1,5 @@
 import unittest
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -6,7 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 
-class ConctactFormTest(unittest.TestCase):
+class TestConctactForm(unittest.TestCase):
 
     def setUp(self):
         self.driver = webdriver.Chrome()
@@ -14,21 +15,19 @@ class ConctactFormTest(unittest.TestCase):
         # Wait for initial element to load
         self.driver.implicitly_wait(5)
 
-    def test_form(self):
+    def test_dev_env_log_in(self):
         password = self.driver.find_element(By.ID, 'password_protected_pass')
         log_in_button = self.driver.find_element(By.ID, "wp-submit")
 
         password.send_keys('ccb')
         log_in_button.click()
 
-        # Wait for the next page to load 
-        WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.ID, 'tfa_FirstName'))
-        )
+        # Assert that the browser is now on the second page
+        self.assertEqual(self.driver.current_url, "https://ccb.elevatenp.org/enroll/")
 
-        print('test')
+    
+    def test_page_one(self):
 
-        # Now not typing keys in
         # Identifying page elements within variables
         first_name = self.driver.find_element(By.ID, 'tfa_FirstName')
         last_name = self.driver.find_element(By.ID, 'tfa_LastName')
@@ -43,9 +42,9 @@ class ConctactFormTest(unittest.TestCase):
         confirm_email.send_keys("johndoe@example.com")
         next_page_button1.click()
 
-        WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.ID, 'tfa_7945020484363'))
-        )
+        self.assertEqual(self.driver.current_url, "https://ccb.elevatenp.org/enroll/#wfPgIndex-2")
+
+    def test_page_two(self):
 
         phone = self.driver.find_element(By.ID, 'tfa_7945020484363')
         street_address = self.driver.find_element(By.ID, 'tfa_StreetAddress')
@@ -70,6 +69,8 @@ class ConctactFormTest(unittest.TestCase):
         service_zip.send_keys('60607')
         next_page_button2.click()
 
+    def test_page_three(self):
+
         WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.ID, 'tfa_AccountNumbernod'))
         )
@@ -79,6 +80,8 @@ class ConctactFormTest(unittest.TestCase):
 
         account_number.send_keys('1234567890')
         next_page_button3.click()
+    
+    def test_page_four(self):
 
         WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.ID, 'tfa_7945020484360'))
@@ -94,6 +97,8 @@ class ConctactFormTest(unittest.TestCase):
         select = Select(drop_down_menu)
         select.select_by_visible_text('Acura NSX')
         next_page_button4.click() 
+
+    def test_page_five(self):
         
         WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.ID, 'tfa_7945020484355-HTML'))
@@ -107,6 +112,8 @@ class ConctactFormTest(unittest.TestCase):
         alert_email.send_keys('johndoe@example.com')
         next_page_button5.click()
 
+    def test_page_six(self):
+
         WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.ID, 'tfa_referalQuestion-L'))
         )
@@ -118,6 +125,9 @@ class ConctactFormTest(unittest.TestCase):
         no_referral.click()
         community_meeting.click()
         next_page_button6.click()
+
+    def test_submissionPage(self):
+        pass
 
     def tearDown(self):
         self.driver.close()
