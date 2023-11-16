@@ -107,7 +107,19 @@ class TestConctactForm(unittest.TestCase):
         community_meeting.click()
         next_page_button6.click()
 
-        self.assertEqual(self.driver.current_url, "https://ccb.elevatenp.org/enroll/#wfPgIndex-7")
+        WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located((By.ID, 'tfa_BySelectingthisc'))
+        )
+
+        conditions_checkbox = self.driver.find_element(By.ID, 'tfa_BySelectingthisc')
+        submit_button = self.driver.find_element(By.ID, 'submit')
+
+        conditions_checkbox.click()
+        submit_button.click()
+
+        # Test is passed once user submits test
+
+        self.assertEqual(self.driver.current_url, "https://ccb.elevatenp.org/enroll/thank-you/")
 
     def tearDown(self):
         self.driver.quit()
